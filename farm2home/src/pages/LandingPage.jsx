@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 
 // Import local assets
+import slide1Img from '../assets/fresh-indian-produce-hero.png';
 import slide2Img from '../assets/sunny-meadow-landscape.jpg';
 import slide3Img from '../assets/strawberry-field.jpg';
 import slide4Img from '../assets/two-brown-cattle-grass-field.jpg';
 
 const SLIDES = [
   {
-    image: '/Users/dineshthangavel/.gemini/antigravity/brain/42c0eb20-4e68-4ffe-a37f-acce20a8cd31/fresh_indian_produce_hero_1776825194290.png',
+    image: slide1Img,
     label: '🚜 Authentically Local & Pure',
     title: 'Directly From <span class="text-[#fbbc05]">Farm</span><br/>To Your Table',
     desc: 'Experience the freshness of the field. We bridge the gap between local verified farmers and your home, ensuring purity in every bite.'
