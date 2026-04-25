@@ -27,4 +27,4 @@ dist/
 .env
 
 # Original assets (ensure these are compressed before pushing)
-# *.jpg removed to allow LandingPage assets
+# These are required for the LandingPage
