@@ -79,7 +79,7 @@ function App() {
           console.log('[OneSignal] Syncing user:', externalId);
           
           await OneSignal.login(externalId);
-
+// testing for the github
           if (user.phone) {
             console.log('[OneSignal] Syncing SMS:', user.phone);
             await OneSignal.User.addSms(String(user.phone));
