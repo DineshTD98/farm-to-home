@@ -25,5 +25,6 @@ dist-ssr
 node_modules/
 dist/
 .env
-*.jpg
-*.jpg
+
+# Original assets (ensure these are compressed before pushing)
+# *.jpg removed to allow LandingPage assets
