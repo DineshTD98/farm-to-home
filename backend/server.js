@@ -20,24 +20,9 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors({
-    origin: [
-        'http://localhost:5173',
-        'http://localhost:5174',
-        'https://farm-to-home-iota.vercel.app',
-        'https://farm-to-home-s97y.onrender.com',
-        'https://farm2home-yzph.onrender.com',
-        process.env.FRONTEND_URL
-    ].filter(Boolean),
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-    credentials: true,
-    optionsSuccessStatus: 200
-}));
+// 🔥 TEMP: allow everything (to confirm fix)
 
-// Enable preflight for all routes
-app.options("*", cors());
-
+app.use(cors());
 app.use(express.json());
 
 // Serve static files from uploads folder
