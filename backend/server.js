@@ -34,6 +34,10 @@ app.use(cors({
     credentials: true,
     optionsSuccessStatus: 200
 }));
+
+// Enable preflight for all routes
+app.options("*", cors());
+
 app.use(express.json());
 
 // Serve static files from uploads folder
