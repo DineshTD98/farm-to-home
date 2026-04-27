@@ -60,9 +60,11 @@ const LandingPage = () => {
         </div>
         
         <div className="hidden md:flex items-center gap-10 text-[11px] font-black uppercase tracking-[0.2em] text-gray-900 dark:text-gray-400">
-            <a href="#" className="hover:text-[#fbbc05] transition-colors border-b-2 border-transparent hover:border-[#fbbc05] pb-1">Home</a>
-            <a href="#direct-connect" className="hover:text-[#fbbc05] transition-colors border-b-2 border-transparent hover:border-[#fbbc05] pb-1">Our Mission</a>
-            <a href="#support" className="hover:text-[#fbbc05] transition-colors border-b-2 border-transparent hover:border-[#fbbc05] pb-1">Support</a>
+            <button onClick={() => navigate('/')} className="hover:text-[#fbbc05] transition-colors border-b-2 border-transparent hover:border-[#fbbc05] pb-1 uppercase">Home</button>
+            <a href="#direct-connect" className="hover:text-[#fbbc05] transition-colors border-b-2 border-transparent hover:border-[#fbbc05] pb-1 uppercase">Our Mission</a>
+            <button onClick={() => navigate('/privacy')} className="hover:text-[#fbbc05] transition-colors border-b-2 border-transparent hover:border-[#fbbc05] pb-1 uppercase">Privacy</button>
+            <button onClick={() => navigate('/terms')} className="hover:text-[#fbbc05] transition-colors border-b-2 border-transparent hover:border-[#fbbc05] pb-1 uppercase">Terms</button>
+            <a href="#support" className="hover:text-[#fbbc05] transition-colors border-b-2 border-transparent hover:border-[#fbbc05] pb-1 uppercase">Support</a>
         </div>
 
         <div className="flex gap-4 items-center">
@@ -92,8 +94,10 @@ const LandingPage = () => {
         {/* Mobile Menu Overlay */}
         {isMenuOpen && (
           <div className="absolute top-[100%] left-0 w-full bg-white dark:bg-[#0a0a0a] border-t border-gray-100 dark:border-white/10 p-6 flex flex-col gap-6 lg:hidden shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300 z-50">
-            <a href="#" onClick={() => setIsMenuOpen(false)} className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-900 dark:text-gray-400 hover:text-[#fbbc05]">Home</a>
+            <button onClick={() => { navigate('/'); setIsMenuOpen(false); }} className="text-[11px] text-left font-black uppercase tracking-[0.2em] text-gray-900 dark:text-gray-400 hover:text-[#fbbc05]">Home</button>
             <a href="#direct-connect" onClick={() => setIsMenuOpen(false)} className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-900 dark:text-gray-400 hover:text-[#fbbc05]">Our Mission</a>
+            <button onClick={() => { navigate('/privacy'); setIsMenuOpen(false); }} className="text-[11px] text-left font-black uppercase tracking-[0.2em] text-gray-900 dark:text-gray-400 hover:text-[#fbbc05]">Privacy Policy</button>
+            <button onClick={() => { navigate('/terms'); setIsMenuOpen(false); }} className="text-[11px] text-left font-black uppercase tracking-[0.2em] text-gray-900 dark:text-gray-400 hover:text-[#fbbc05]">Terms of Use</button>
             <a href="#support" onClick={() => setIsMenuOpen(false)} className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-900 dark:text-gray-400 hover:text-[#fbbc05]">Support</a>
             <hr className="border-gray-100 dark:border-white/5" />
             <button

@@ -39,6 +39,8 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 
 import ComingSoon from './pages/shared/ComingSoon';
+import TermsOfUse from './pages/TermsOfUse';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 // Protected route — redirects to login if no token
 const ProtectedRoute = ({ children }) => {
@@ -52,6 +54,15 @@ const Placeholder = ({ name, back }) => (
     <ComingSoon featureName={name} backLink={back} />
   </ProtectedRoute>
 );
+
+// Component to handle scrolling to top on route change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
 
 // Component to handle conditional footer rendering
 const ConditionalFooter = () => {
@@ -128,6 +139,7 @@ function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <InactivityHandler />
         <Routes>
           {/* ... existing routes ... */}
@@ -137,6 +149,8 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/terms" element={<TermsOfUse />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
 
           <Route path="/farmer-portal"   element={<ProtectedRoute><Portal role="farmer" /></ProtectedRoute>} />
           <Route path="/farmer/products" element={<ProtectedRoute><ProductList /></ProtectedRoute>} />
