@@ -26,6 +26,7 @@ app.use(cors({
         'http://localhost:5174',
         'https://farm-to-home-iota.vercel.app',
         'https://farm-to-home-s97y.onrender.com',
+        'https://farm2home-yzph.onrender.com',
         process.env.FRONTEND_URL
     ].filter(Boolean),
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
