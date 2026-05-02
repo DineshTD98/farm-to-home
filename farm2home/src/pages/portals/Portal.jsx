@@ -8,6 +8,7 @@ import { selectUnreadCount } from '../../redux/slices/chatSlice';
 import { getNotifications, markNotificationRead } from '../../api/notifications';
 import { useTranslation } from 'react-i18next';
 import { getUserAvatarUrl } from '../../utils/avatarUrl';
+import i18n from '../../i18n';
 
 const portalConfig = {
   farmer: {
@@ -148,6 +149,12 @@ const Portal = ({ role }) => {
   const [latestStockAlert, setLatestStockAlert] = useState(null);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (role === 'admin' && i18n.language !== 'en') {
+      i18n.changeLanguage('en');
+    }
+  }, [role]);
 
   useEffect(() => {
     const fetchAlerts = async () => {

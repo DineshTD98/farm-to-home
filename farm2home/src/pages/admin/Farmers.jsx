@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import AdminLayout from '../../layouts/AdminLayout';
-import { getAllFarmers } from '../../api/admin';
+import { getAllFarmers, verifyFarmerBankDetails } from '../../api/admin';
 
 const Farmers = () => {
     const [farmers, setFarmers] = useState([]);
@@ -17,8 +17,18 @@ const Farmers = () => {
                 setLoading(false);
             }
         };
+    
         fetchFarmers();
     }, []);
+    const handleVerify = async (id) => {
+        try {
+            await verifyFarmerBankDetails(id);
+            setFarmers(farmers.map(f => f._id === id ? { ...f, bankDetails: { ...f.bankDetails, verified: true } } : f));
+        } catch (err) {
+            console.error('Verify error', err);
+            alert('Failed to verify bank details');
+        }
+    };
 
     return (
         <AdminLayout title="Farmers" subtitle="Platform Partners">
@@ -32,7 +42,9 @@ const Farmers = () => {
                                 <tr className="bg-gray-50 dark:bg-white/5 text-[10px] uppercase tracking-widest text-gray-500">
                                     <th className="p-6 font-black">Name</th>
                                     <th className="p-6 font-black">Phone</th>
+                                    <th className="p-6 font-black">Payout Details</th>
                                     <th className="p-6 font-black">Joined</th>
+                                    <th className="p-6 font-black text-right">Action</th>
                                 </tr>
                             </thead>
                             <tbody className="text-sm">
@@ -45,11 +57,36 @@ const Farmers = () => {
                                             {farmer.firstName} {farmer.lastName}
                                         </td>
                                         <td className="p-6">{farmer.phone}</td>
+                                        <td className="p-6">
+                                            {farmer.bankDetails?.accountNumber ? (
+                                                <>
+                                                    <div className="font-bold">{farmer.bankDetails.bankName || 'N/A'} - {farmer.bankDetails.accountNumber}</div>
+                                                    <div className="text-[10px] text-gray-500 uppercase tracking-widest">{farmer.bankDetails.ifsc} | {farmer.bankDetails.accountHolderName}</div>
+                                                    {farmer.bankDetails.verified ? (
+                                                        <span className="text-[9px] font-black text-green-600 bg-green-100 px-2 py-0.5 rounded-full mt-1 inline-block">✓ VERIFIED</span>
+                                                    ) : (
+                                                        <span className="text-[9px] font-black text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full mt-1 inline-block">⏳ UNVERIFIED</span>
+                                                    )}
+                                                </>
+                                            ) : (
+                                                <span className="text-[10px] text-gray-400 italic">Not set</span>
+                                            )}
+                                        </td>
                                         <td className="p-6 text-gray-500">{new Date(farmer.createdAt).toLocaleDateString()}</td>
+                                        <td className="p-6 text-right">
+                                            {farmer.bankDetails?.accountNumber && !farmer.bankDetails?.verified && (
+                                                <button 
+                                                    onClick={() => handleVerify(farmer._id)}
+                                                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-colors"
+                                                >
+                                                    Approve Details
+                                                </button>
+                                            )}
+                                        </td>
                                     </tr>
                                 ))}
                                 {farmers.length === 0 && (
-                                    <tr><td colSpan="3" className="p-10 text-center text-gray-500 text-xs uppercase tracking-widest">No farmers found</td></tr>
+                                    <tr><td colSpan="5" className="p-10 text-center text-gray-500 text-xs uppercase tracking-widest">No farmers found</td></tr>
                                 )}
                             </tbody>
                         </table>

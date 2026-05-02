@@ -20,6 +20,15 @@ export const loginUser = async (credentials) => {
     }
 };
 
+export const getProfile = async (userId) => {
+    try {
+        const response = await axios.get(`${BASE}/profile/${userId}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to fetch profile');
+    }
+};
+
 export const updateProfile = async (userId, profileData) => {
     try {
         const response = await axios.put(`${BASE}/profile/${userId}`, profileData);

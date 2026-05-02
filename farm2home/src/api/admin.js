@@ -38,11 +38,20 @@ export const getAllPayouts = async () => {
     }
 };
 
-export const markPayoutPaid = async (id, transactionReference) => {
+export const markPayoutPaid = async (payoutId, transactionReference) => {
     try {
-        const response = await axios.put(`${BASE}/payouts/${id}/pay`, { transactionReference });
+        const response = await axios.put(`${BASE}/payouts/${payoutId}/pay`, { transactionReference });
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.message || 'Failed to mark payout as paid');
+    }
+};
+
+export const verifyFarmerBankDetails = async (farmerId) => {
+    try {
+        const response = await axios.put(`${BASE}/farmers/${farmerId}/verify-bank`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to verify bank details');
     }
 };

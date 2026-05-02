@@ -141,7 +141,7 @@ const updateProfile = async (req, res) => {
         console.log("Body:", req.body);
         console.log("File:", req.file ? req.file.originalname : "No file");
         
-        const { firstName, lastName, phone, email, address, pincode, latitude, longitude } = req.body;
+        const { firstName, lastName, phone, email, address, pincode, latitude, longitude, bankDetails } = req.body;
 
         if (!firstName || !lastName || !phone || !email) {
             return res.status(400).json({ message: 'All mandatory fields are required' });
@@ -172,6 +172,18 @@ const updateProfile = async (req, res) => {
             };
         }
 
+        if (bankDetails) {
+            try {
+                const parsedBankDetails = typeof bankDetails === 'string' ? JSON.parse(bankDetails) : bankDetails;
+                updateData.bankDetails = {
+                    ...parsedBankDetails,
+                    verified: false // Reset verification on update
+                };
+            } catch (e) {
+                console.error('Failed to parse bankDetails', e);
+            }
+        }
+
         if (req.file) {
             updateData.avatar = `/uploads/${req.file.filename}`;
         }
@@ -199,6 +211,7 @@ const updateProfile = async (req, res) => {
                 address: user.address,
                 pincode: user.pincode,
                 location: user.location,
+                bankDetails: user.bankDetails,
             },
         });
     } catch (error) {
@@ -310,4 +323,32 @@ const resetPassword = async (req, res) => {
     }
 };
 
-module.exports = { signup, login, updateProfile, deleteAccount, forgotPassword, resetPassword };
+// @desc  Get user profile
+// @route GET /api/auth/profile/:id
+// @access Private
+const getUserProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({
+            id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phone: user.phone,
+            email: user.email,
+            role: user.role,
+            avatar: user.avatar,
+            address: user.address,
+            pincode: user.pincode,
+            location: user.location,
+            bankDetails: user.bankDetails,
+        });
+    } catch (error) {
+        console.error('Get profile error:', error);
+        res.status(500).json({ message: 'Server error fetching profile' });
+    }
+};
+
+module.exports = { signup, login, updateProfile, deleteAccount, forgotPassword, resetPassword, getUserProfile };

@@ -1,9 +1,18 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
 
 const AdminLayout = ({ children, title, subtitle }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
+
+    useEffect(() => {
+        // Force English for Admin portal
+        if (i18n.language !== 'en') {
+            i18n.changeLanguage('en');
+        }
+    }, []);
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0a] flex flex-col font-sans transition-colors duration-500 text-gray-900 dark:text-white">

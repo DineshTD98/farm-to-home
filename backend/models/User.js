@@ -64,6 +64,14 @@ const userSchema = new mongoose.Schema(
                 default: [0, 0], // [longitude, latitude]
             },
         },
+        bankDetails: {
+            accountHolderName: { type: String, default: '' },
+            accountNumber: { type: String, default: '' },
+            ifsc: { type: String, default: '' },
+            bankName: { type: String, default: '' },
+            upiId: { type: String, default: '' },
+            verified: { type: Boolean, default: false }
+        },
     },
     { timestamps: true }
 );

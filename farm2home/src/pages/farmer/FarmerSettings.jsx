@@ -3,7 +3,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCurrentUser, selectCurrentToken, setCredentials, logout } from '../../redux/slices/authSlice';
-import { updateProfile, deleteAccount } from '../../api/auth';
+import { updateProfile, deleteAccount, getProfile } from '../../api/auth';
 import MapPicker from '../../components/MapPicker';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
@@ -42,6 +42,11 @@ const FarmerSettings = () => {
     pincode: user?.pincode || '',
     latitude: user?.location?.coordinates?.[1] || '',
     longitude: user?.location?.coordinates?.[0] || '',
+    bankAccountHolderName: user?.bankDetails?.accountHolderName || '',
+    bankAccountNumber: user?.bankDetails?.accountNumber || '',
+    bankIfsc: user?.bankDetails?.ifsc || '',
+    bankName: user?.bankDetails?.bankName || '',
+    bankUpiId: user?.bankDetails?.upiId || '',
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
@@ -59,6 +64,20 @@ const FarmerSettings = () => {
   const [deleteError, setDeleteError] = useState('');
 
   useEffect(() => {
+    const fetchFreshProfile = async () => {
+      try {
+        if (user?.id || user?._id) {
+          const freshUser = await getProfile(user.id || user._id);
+          dispatch(setCredentials({ user: freshUser, token }));
+        }
+      } catch (err) {
+        console.error('Failed to fetch fresh profile', err);
+      }
+    };
+    fetchFreshProfile();
+  }, []);
+
+  useEffect(() => {
     setFormData(prev => ({
       ...prev,
       firstName: user?.firstName || '',
@@ -69,6 +88,11 @@ const FarmerSettings = () => {
       pincode: user?.pincode || '',
       latitude: user?.location?.coordinates?.[1] || '',
       longitude: user?.location?.coordinates?.[0] || '',
+      bankAccountHolderName: user?.bankDetails?.accountHolderName || '',
+      bankAccountNumber: user?.bankDetails?.accountNumber || '',
+      bankIfsc: user?.bankDetails?.ifsc || '',
+      bankName: user?.bankDetails?.bankName || '',
+      bankUpiId: user?.bankDetails?.upiId || '',
     }));
     if (user?.avatar) setAvatarPreview(`${UPLOADS_BASE}${user.avatar.replace('/uploads', '')}`);
   }, [user]);
@@ -141,10 +165,19 @@ const FarmerSettings = () => {
     try {
       const payload = new FormData();
       Object.keys(formData).forEach(key => {
-        if (formData[key] !== undefined && formData[key] !== null && formData[key] !== '') {
+        if (!key.startsWith('bank') && formData[key] !== undefined && formData[key] !== null && formData[key] !== '') {
           payload.append(key, formData[key]);
         }
       });
+      
+      const bankDetailsPayload = {
+          accountHolderName: formData.bankAccountHolderName,
+          accountNumber: formData.bankAccountNumber,
+          ifsc: formData.bankIfsc,
+          bankName: formData.bankName,
+          upiId: formData.bankUpiId
+      };
+      payload.append('bankDetails', JSON.stringify(bankDetailsPayload));
       if (avatarFile) payload.append('avatar', avatarFile);
 
       const response = await updateProfile(user.id || user._id, payload);
@@ -345,6 +378,29 @@ const FarmerSettings = () => {
                     <button type="button" onClick={handleGetCurrentLocation} className="w-full px-8 py-5 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-900 dark:text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-white dark:hover:bg-white/10 hover:border-green-600 transition-all shadow-sm">
                       📍 TRIGGER GPS SYCHRONIZATION
                     </button>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-[11px] font-black text-green-600 dark:text-green-500 uppercase tracking-[0.5em] mb-8 border-b border-green-50 dark:border-green-900/10 pb-4 flex items-center gap-4">
+                      Financial Routing
+                      {user?.bankDetails?.verified ? (
+                          <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-[9px]">✓ VERIFIED</span>
+                      ) : (
+                          <span className="bg-amber-100 text-amber-600 px-3 py-1 rounded-full text-[9px]">⏳ UNVERIFIED</span>
+                      )}
+                  </h3>
+                  <div className="space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <InputField label="Account Holder Name" type="text" name="bankAccountHolderName" value={formData.bankAccountHolderName} onChange={handleChange} />
+                      <InputField label="Account Number" type="password" name="bankAccountNumber" value={formData.bankAccountNumber} onChange={handleChange} />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                      <InputField label="Bank Name" type="text" name="bankName" value={formData.bankName} onChange={handleChange} />
+                      <InputField label="IFSC Code" type="text" name="bankIfsc" value={formData.bankIfsc} onChange={handleChange} />
+                      <InputField label="UPI ID (Optional)" type="text" name="bankUpiId" value={formData.bankUpiId} onChange={handleChange} />
+                    </div>
+                    <p className="text-[10px] font-medium text-amber-600 italic">Note: Updating your bank details will reset your verification status. Admin approval is required before payouts can resume.</p>
                   </div>
                 </div>
 

@@ -98,10 +98,34 @@ const markPayoutPaid = async (req, res) => {
     }
 };
 
+// @desc    Verify farmer bank details
+// @route   PUT /api/admin/farmers/:id/verify-bank
+// @access  Private (Admin)
+const verifyBankDetails = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user || user.role !== 'farmer') {
+            return res.status(404).json({ message: 'Farmer not found' });
+        }
+        
+        if (!user.bankDetails) {
+            user.bankDetails = {};
+        }
+        user.bankDetails.verified = true;
+        await user.save();
+        
+        res.json({ message: 'Bank details verified successfully', user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
 module.exports = {
     getAdminStats,
     getAllOrders,
     getAllFarmers,
     getAllPayouts,
-    markPayoutPaid
+    markPayoutPaid,
+    verifyBankDetails
 };
