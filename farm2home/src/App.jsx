@@ -41,6 +41,7 @@ import ResetPassword from './pages/ResetPassword';
 import ComingSoon from './pages/shared/ComingSoon';
 import TermsOfUse from './pages/TermsOfUse';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import FAQ from './pages/FAQ';
 
 // Protected route — redirects to login if no token
 const ProtectedRoute = ({ children }) => {
@@ -151,6 +152,7 @@ function App() {
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/terms" element={<TermsOfUse />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/faq" element={<FAQ />} />
 
           <Route path="/farmer-portal"   element={<ProtectedRoute><Portal role="farmer" /></ProtectedRoute>} />
           <Route path="/farmer/products" element={<ProtectedRoute><ProductList /></ProtectedRoute>} />

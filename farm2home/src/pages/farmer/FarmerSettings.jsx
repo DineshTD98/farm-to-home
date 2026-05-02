@@ -37,6 +37,7 @@ const FarmerSettings = () => {
     firstName: user?.firstName || '',
     lastName: user?.lastName || '',
     phone: user?.phone || '',
+    email: user?.email || '',
     address: user?.address || '',
     pincode: user?.pincode || '',
     latitude: user?.location?.coordinates?.[1] || '',
@@ -63,6 +64,7 @@ const FarmerSettings = () => {
       firstName: user?.firstName || '',
       lastName: user?.lastName || '',
       phone: user?.phone || '',
+      email: user?.email || '',
       address: user?.address || '',
       pincode: user?.pincode || '',
       latitude: user?.location?.coordinates?.[1] || '',
@@ -139,7 +141,9 @@ const FarmerSettings = () => {
     try {
       const payload = new FormData();
       Object.keys(formData).forEach(key => {
-        if (formData[key]) payload.append(key, formData[key]);
+        if (formData[key] !== undefined && formData[key] !== null && formData[key] !== '') {
+          payload.append(key, formData[key]);
+        }
       });
       if (avatarFile) payload.append('avatar', avatarFile);
 
@@ -317,7 +321,10 @@ const FarmerSettings = () => {
                     <InputField label="Operational First Name" type="text" name="firstName" value={formData.firstName} onChange={handleChange} required />
                     <InputField label="Operational Last Name" type="text" name="lastName" value={formData.lastName} onChange={handleChange} required />
                   </div>
-                  <InputField label="Secure Contact Line" type="tel" name="phone" value={formData.phone} onChange={handleChange} required pattern="\d{10}" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <InputField label="Secure Contact Line" type="tel" name="phone" value={formData.phone} onChange={handleChange} required pattern="\d{10}" />
+                    <InputField label="Email Address" type="email" name="email" value={formData.email} onChange={handleChange} required />
+                  </div>
                 </div>
 
                 <div>

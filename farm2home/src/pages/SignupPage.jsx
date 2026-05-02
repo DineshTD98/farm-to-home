@@ -24,6 +24,7 @@ const SignupPage = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -45,6 +46,8 @@ const SignupPage = () => {
     if (!/[!@#$%^&*(),.?":{}|<>]/.test(form.password)) return setError('Password must contain at least one special character.');
 
     if (!form.role) return setError('Please select a role.');
+    if (!termsAccepted) return setError('You must agree to the Terms and Conditions.');
+
     setLoading(true);
     try {
       const data = await signupUser(form);
@@ -63,6 +66,14 @@ const SignupPage = () => {
       {/* Decorative background elements */}
       <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-amber-100/20 dark:bg-amber-400/5 rounded-full blur-[140px] -mr-40 -mt-40 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-gray-100 dark:bg-white/5 rounded-full blur-[100px] -ml-20 -mb-20 pointer-events-none" />
+
+      {/* Back to Overview Button */}
+      <button 
+        onClick={() => navigate('/')}
+        className="absolute top-8 left-8 z-50 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center gap-2"
+      >
+        <span>←</span> Back to Overview
+      </button>
 
       {/* Floating Theme Toggle */}
       <div className="absolute top-8 right-8 z-50">
@@ -98,11 +109,11 @@ const SignupPage = () => {
           <div className="grid grid-cols-2 gap-5">
             <div>
               <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">First Name</label>
-              <input type="text" name="firstName" placeholder="John" value={form.firstName} onChange={handleChange} required className={inputClass} />
+              <input type="text" name="firstName" value={form.firstName} onChange={handleChange} required className={inputClass} />
             </div>
             <div>
               <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Last Name</label>
-              <input type="text" name="lastName" placeholder="Doe" value={form.lastName} onChange={handleChange} required className={inputClass} />
+              <input type="text" name="lastName" value={form.lastName} onChange={handleChange} required className={inputClass} />
             </div>
           </div>
 
@@ -114,7 +125,7 @@ const SignupPage = () => {
             </div>
             <div>
               <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Email Address</label>
-              <input type="email" name="email" placeholder="john@example.com" value={form.email} onChange={handleChange} required className={inputClass} />
+              <input type="email" name="email" value={form.email} onChange={handleChange} required className={inputClass} />
             </div>
           </div>
 
@@ -142,6 +153,23 @@ const SignupPage = () => {
               <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Confirm</label>
               <input type="password" name="confirmPassword" placeholder="••••••••" value={form.confirmPassword} onChange={handleChange} required className={inputClass} />
             </div>
+          </div>
+
+          {/* Terms & Conditions */}
+          <div className="flex items-center gap-3 py-2">
+            <input
+              type="checkbox"
+              id="terms"
+              checked={termsAccepted}
+              onChange={(e) => setTermsAccepted(e.target.checked)}
+              className="w-4 h-4 text-[#fbbc05] bg-gray-100 border-gray-300 rounded focus:ring-[#fbbc05] dark:focus:ring-[#fbbc05] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+            />
+            <label htmlFor="terms" className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+              I agree to the{' '}
+              <span onClick={() => navigate('/terms', { state: { backUrl: '/signup' } })} className="text-[#fbbc05] cursor-pointer hover:underline">
+                Terms and Conditions
+              </span>
+            </label>
           </div>
 
           <button

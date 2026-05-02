@@ -1,8 +1,17 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const TermsOfUse = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const handleGoBack = () => {
+        if (location.state?.backUrl) {
+            navigate(location.state.backUrl);
+        } else {
+            navigate(-1);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-white dark:bg-[#0a0a0a] text-gray-900 dark:text-gray-100 transition-colors duration-500">
@@ -19,7 +28,7 @@ const TermsOfUse = () => {
                         </div>
                     </div>
                     <button 
-                        onClick={() => navigate(-1)}
+                        onClick={handleGoBack}
                         className="text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors"
                     >
                         Go Back

@@ -137,6 +137,10 @@ const login = async (req, res) => {
 // @access Private
 const updateProfile = async (req, res) => {
     try {
+        console.log("=== UPDATE PROFILE HIT ===");
+        console.log("Body:", req.body);
+        console.log("File:", req.file ? req.file.originalname : "No file");
+        
         const { firstName, lastName, phone, email, address, pincode, latitude, longitude } = req.body;
 
         if (!firstName || !lastName || !phone || !email) {

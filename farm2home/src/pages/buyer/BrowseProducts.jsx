@@ -46,6 +46,7 @@ const BrowseProducts = () => {
   const [buyerLocation, setBuyerLocation] = useState(null);
   const [locationStatus, setLocationStatus] = useState('idle'); // idle, loading, success, error
   const [showMap, setShowMap] = useState(false);
+  const [showAdvancedLocation, setShowAdvancedLocation] = useState(false);
   const [pincode, setPincode] = useState(user?.pincode || '');
   const [latestStockAlert, setLatestStockAlert] = useState(null);
   const [subscriptions, setSubscriptions] = useState({}); // { productId: true/false }
@@ -497,70 +498,95 @@ const BrowseProducts = () => {
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-[#111111] border border-gray-100 dark:border-white/5 p-8 rounded-[3rem] flex flex-col items-center gap-8 shadow-sm">
-                <div className="flex flex-col md:flex-row items-center gap-10 w-full">
-                  <div className="flex items-center gap-5 flex-1 w-full">
-                    <div className="w-14 h-14 rounded-[1.5rem] bg-amber-50 dark:bg-white/5 flex items-center justify-center text-2xl shadow-inner shadow-amber-900/5">📍</div>
-                    <div className="flex-1">
-                      <div className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-[0.2em] mb-2 px-1">Search Radius</div>
-                      <div className="flex items-center gap-6">
-                        <input 
-                          type="range" 
-                          min="1" 
-                          max="500" 
-                          value={radius} 
-                          onChange={(e) => setRadius(parseInt(e.target.value))}
-                          className="flex-1 h-2 bg-gray-100 dark:bg-white/10 rounded-full appearance-none cursor-pointer accent-[#fbbc05]"
-                        />
-                        <span className="text-gray-900 dark:text-white font-black text-sm min-w-[70px] bg-amber-50 dark:bg-white/10 px-3 py-1 rounded-lg text-center">{radius} km</span>
+              <div className="bg-white dark:bg-[#111111] border border-gray-100 dark:border-white/5 p-6 md:p-8 rounded-[3rem] shadow-sm transition-all duration-300">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="flex items-center gap-5 w-full md:w-auto">
+                    <div className="w-14 h-14 rounded-[1.5rem] shrink-0 bg-amber-50 dark:bg-white/5 flex items-center justify-center text-2xl shadow-inner shadow-amber-900/5">📍</div>
+                    <div>
+                      <div className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-[0.2em] mb-1">Current Origin</div>
+                      <div className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border shadow-sm inline-flex ${
+                        locationStatus === 'success' ? 'bg-amber-50 dark:bg-amber-400/10 border-amber-100 dark:border-amber-400/20 text-[#fbbc05]' : 
+                        locationStatus === 'loading' ? 'bg-blue-50 border-blue-100 text-blue-500' :
+                        'bg-red-50 border-red-100 text-red-500'
+                      }`}>
+                        {locationStatus === 'success' ? 'Location Active' : 
+                         locationStatus === 'loading' ? 'Detecting...' : 'GPS Disabled'}
                       </div>
                     </div>
                   </div>
                   
-                  <div className="h-10 w-px bg-gray-100 dark:bg-white/10 hidden md:block"></div>
-                  
-                  <div className="flex items-center gap-5 w-full md:w-auto">
-                    <div className="flex-1 md:w-40">
-                      <div className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-[0.2em] mb-2 px-1">Pincode</div>
-                      <input 
-                        type="text" 
-                        value={pincode}
-                        onChange={handlePincodeChange}
-                        placeholder="600001"
-                        maxLength={6}
-                        className="w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-4 py-2.5 text-gray-900 dark:text-white text-xs font-bold focus:outline-none focus:border-[#fbbc05] focus:ring-4 focus:ring-amber-500/5 transition-all"
-                      />
-                    </div>
-                    <button 
-                      onClick={() => setShowMap(!showMap)}
-                      className="px-6 py-3 rounded-2xl bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest hover:text-gray-900 dark:hover:text-white hover:border-gray-900 dark:hover:border-white transition-all shadow-sm"
-                    >
-                      {showMap ? 'Hide Map' : 'Set on Map'}
-                    </button>
-                    <div className={`px-5 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest border shadow-sm ${
-                      locationStatus === 'success' ? 'bg-amber-50 dark:bg-amber-400/10 border-amber-100 dark:border-amber-400/20 text-[#fbbc05]' : 
-                      locationStatus === 'loading' ? 'bg-blue-50 border-blue-100 text-blue-500' :
-                      'bg-red-50 border-red-100 text-red-500'
-                    }`}>
-                      {locationStatus === 'success' ? '📍 ACTIVE' : 
-                       locationStatus === 'loading' ? '⌛ DETECTING' : '⚠️ GPS'}
-                    </div>
-                  </div>
+                  <button 
+                    onClick={() => setShowAdvancedLocation(!showAdvancedLocation)}
+                    className={`w-full md:w-auto px-6 py-4 rounded-2xl border text-[10px] font-black uppercase tracking-widest transition-all shadow-sm whitespace-nowrap ${
+                      showAdvancedLocation 
+                        ? 'bg-gray-900 dark:bg-white text-white dark:text-black border-gray-900 dark:border-white shadow-lg shadow-gray-900/10'
+                        : 'bg-gray-50 dark:bg-white/5 border-gray-100 dark:border-white/10 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10'
+                    }`}
+                  >
+                    {showAdvancedLocation ? 'Close Settings' : 'Change Location & Radius'}
+                  </button>
                 </div>
 
-                {showMap && (
-                  <div className="w-full animate-in slide-in-from-top duration-300">
-                    <div className="border border-gray-100 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-inner">
-                      <MapPicker 
-                        lat={buyerLocation?.lat} 
-                        lng={buyerLocation?.lng} 
-                        onChange={(pos) => {
-                          setBuyerLocation(pos);
-                          setLocationStatus('success');
-                        }}
-                      />
+                {showAdvancedLocation && (
+                  <div className="mt-8 pt-8 border-t border-gray-100 dark:border-white/5 animate-in slide-in-from-top-4 duration-300">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-end">
+                      {/* Radius */}
+                      <div className="w-full">
+                        <div className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-[0.2em] mb-4 px-1">Search Radius</div>
+                        <div className="flex items-center gap-6">
+                          <input 
+                            type="range" 
+                            min="1" 
+                            max="500" 
+                            value={radius} 
+                            onChange={(e) => setRadius(parseInt(e.target.value))}
+                            className="flex-1 h-2 bg-gray-100 dark:bg-white/10 rounded-full appearance-none cursor-pointer accent-[#fbbc05]"
+                          />
+                          <span className="text-gray-900 dark:text-white font-black text-sm min-w-[70px] bg-amber-50 dark:bg-white/10 px-3 py-2 rounded-xl text-center">{radius} km</span>
+                        </div>
+                      </div>
+
+                      {/* Pincode & Map */}
+                      <div className="flex flex-col sm:flex-row items-end gap-5 w-full">
+                        <div className="flex-1 w-full">
+                          <div className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-[0.2em] mb-4 px-1">Pincode Override</div>
+                          <input 
+                            type="text" 
+                            value={pincode}
+                            onChange={handlePincodeChange}
+                            placeholder="600001"
+                            maxLength={6}
+                            className="w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white text-xs font-bold focus:outline-none focus:border-[#fbbc05] focus:ring-4 focus:ring-amber-500/5 transition-all"
+                          />
+                        </div>
+                        <button 
+                          onClick={() => setShowMap(!showMap)}
+                          className={`w-full sm:w-auto px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-sm ${
+                            showMap 
+                              ? 'bg-[#fbbc05] text-white border-transparent shadow-lg shadow-amber-500/20'
+                              : 'bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-400 hover:text-gray-900 dark:hover:text-white hover:border-gray-900 dark:hover:border-white'
+                          }`}
+                        >
+                          {showMap ? 'Hide Map' : 'Set on Map'}
+                        </button>
+                      </div>
                     </div>
-                    <p className="text-[10px] text-gray-400 mt-4 text-center uppercase font-black tracking-widest">Selected location will be used to filter fresh products automatically</p>
+
+                    {showMap && (
+                      <div className="w-full mt-8 animate-in zoom-in-95 duration-300">
+                        <div className="border border-gray-100 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-inner">
+                          <MapPicker 
+                            lat={buyerLocation?.lat} 
+                            lng={buyerLocation?.lng} 
+                            onChange={(pos) => {
+                              setBuyerLocation(pos);
+                              setLocationStatus('success');
+                            }}
+                          />
+                        </div>
+                        <p className="text-[10px] text-gray-400 mt-4 text-center uppercase font-black tracking-widest">Selected location will be used to filter fresh products automatically</p>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -662,6 +688,32 @@ const BrowseProducts = () => {
                   );
                 })}
             </div>
+
+            {products.filter((p) => {
+              const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
+              if (!matchesCategory) return false;
+              const query = appliedSearchQuery.trim().toLowerCase();
+              if (!query) return true;
+              const farmerName = `${p.farmerId?.firstName || ''} ${p.farmerId?.lastName || ''}`.toLowerCase();
+              const searchableText = `${p.name || ''} ${p.category || ''} ${p.description || ''} ${farmerName}`.toLowerCase();
+              return searchableText.includes(query);
+            }).length === 0 && (
+              <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in duration-500">
+                <div className="text-6xl mb-6 opacity-50 grayscale">🌾</div>
+                <h3 className="text-2xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-2">No Harvest Found</h3>
+                <p className="text-gray-500 dark:text-gray-400 font-medium max-w-md mx-auto">
+                  We couldn't find any produce matching your criteria within <span className="font-black text-gray-900 dark:text-white">{radius} km</span>.
+                </p>
+                <div className="mt-8 flex gap-4 justify-center">
+                  <button onClick={() => setRadius(prev => Math.min(prev + 50, 500))} className="px-6 py-3 rounded-2xl bg-[#fbbc05] text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-amber-500/30 hover:-translate-y-1 transition-all">
+                    Increase Radius
+                  </button>
+                  <button onClick={() => setShowAdvancedLocation(true)} className="px-6 py-3 rounded-2xl bg-gray-50 dark:bg-white/5 text-gray-900 dark:text-white text-[10px] font-black uppercase tracking-widest hover:bg-gray-100 dark:hover:bg-white/10 transition-all">
+                    Change Location
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
           </>

@@ -1,7 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Footer = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
     return (
         <>
             {/* Support Strip */}
@@ -11,7 +13,7 @@ const Footer = () => {
                     <p className="text-lg text-gray-500 dark:text-gray-400 mb-12 font-medium">Need help with your account or have questions about our verified farmers? Reach out to our dedicated support team directly.</p>
                     <div className="flex justify-center gap-6 flex-wrap">
                         <button className="px-12 py-4 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white text-[11px] font-black uppercase tracking-widest hover:border-gray-900 dark:hover:border-white transition-all shadow-sm">Email Support</button>
-                        <button className="px-12 py-4 rounded-full bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-900 dark:text-white text-[11px] font-black uppercase tracking-widest hover:border-gray-900 dark:hover:border-white transition-all shadow-sm">View FAQ</button>
+                        <button onClick={() => navigate('/faq', { state: { backUrl: location.pathname } })} className="px-12 py-4 rounded-full bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-900 dark:text-white text-[11px] font-black uppercase tracking-widest hover:border-gray-900 dark:hover:border-white transition-all shadow-sm">View FAQ</button>
                     </div>
                 </div>
             </section>
@@ -27,8 +29,8 @@ const Footer = () => {
                     </div>
                     
                     <div className="flex gap-12 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.25em]">
-                        <Link to="/privacy" className="hover:text-gray-900 dark:hover:text-white transition-colors">Privacy Policy</Link>
-                        <Link to="/terms" className="hover:text-gray-900 dark:hover:text-white transition-colors">Terms of Use</Link>
+                        <Link to="/privacy" state={{ backUrl: location.pathname }} className="hover:text-gray-900 dark:hover:text-white transition-colors">Privacy Policy</Link>
+                        <Link to="/terms" state={{ backUrl: location.pathname }} className="hover:text-gray-900 dark:hover:text-white transition-colors">Terms of Use</Link>
                         <a href="#" className="hover:text-gray-900 dark:hover:text-white transition-colors">Safety</a>
                     </div>
 

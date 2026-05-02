@@ -145,6 +145,11 @@ const Checkout = () => {
 
     // Handle Razorpay (CARD and UPI)
     if (paymentMethod === 'UPI' || paymentMethod === 'CARD') {
+      if (paymentMethod === 'UPI' && !upiVerified) {
+        setError('Please verify your UPI ID before proceeding with the payment.');
+        return;
+      }
+
       try {
         setLoading(true);
         setError('');
@@ -205,6 +210,10 @@ const Checkout = () => {
             name: `${user.firstName} ${user.lastName}`,
             email: user.email,
             contact: user.phone,
+            ...(paymentMethod === 'UPI' && {
+              method: 'upi',
+              vpa: upiId
+            })
           },
           notes: {
             address: address,
@@ -417,8 +426,40 @@ const Checkout = () => {
             </div>
           )}
 
-          {/* Razorpay Online Payment Info Box */}
-          {(paymentMethod === 'CARD' || paymentMethod === 'UPI') && (
+          {/* UPI Input Box */}
+          {paymentMethod === 'UPI' && (
+            <div className="animate-in fade-in slide-in-from-top-2 duration-300 bg-amber-50/60 dark:bg-amber-400/5 border border-amber-100 dark:border-amber-400/10 rounded-[2rem] p-6 flex flex-col gap-4">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-3xl">📱</span>
+                <div>
+                  <p className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-wider">Direct UPI Transfer</p>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 font-medium leading-relaxed">
+                    Enter your Virtual Payment Address (VPA) below to receive a collect request on your UPI app.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <input 
+                  type="text"
+                  value={upiId}
+                  onChange={(e) => { setUpiId(e.target.value); setUpiVerified(false); setError(''); }}
+                  placeholder="e.g. yourname@upi"
+                  className="flex-1 bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white font-bold placeholder-gray-400 focus:outline-none focus:border-[#fbbc05] transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={handleVerifyUpi}
+                  disabled={!upiId.trim() || upiVerifying || upiVerified}
+                  className="px-6 py-3 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-black text-xs uppercase tracking-widest hover:bg-[#fbbc05] transition-colors disabled:opacity-50 shadow-sm"
+                >
+                  {upiVerifying ? 'VERIFYING...' : upiVerified ? 'VERIFIED ✓' : 'VERIFY VPA'}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Razorpay Online Payment Info Box (Card) */}
+          {paymentMethod === 'CARD' && (
             <div className="animate-in fade-in slide-in-from-top-2 duration-300 bg-gray-50/60 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-[2rem] p-6 flex flex-col gap-3">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-white dark:bg-[#1a1a1a] shadow-sm flex items-center justify-center border border-gray-100 dark:border-white/5">
@@ -427,7 +468,7 @@ const Checkout = () => {
                 <div>
                   <p className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-wider">Secure Razorpay Checkout</p>
                   <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 font-medium leading-relaxed">
-                    You will be redirected to Razorpay's encrypted modal to complete your {paymentMethod === 'UPI' ? 'UPI' : 'Card'} transaction.
+                    You will be redirected to Razorpay's encrypted modal to complete your Card transaction.
                   </p>
                 </div>
               </div>
