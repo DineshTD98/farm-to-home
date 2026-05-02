@@ -2,6 +2,7 @@ const Order = require('../models/Order');
 const Product = require('../models/Product');
 const Notification = require('../models/Notification');
 const User = require('../models/User');
+const Payout = require('../models/Payout');
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const { sendPushNotification } = require('../services/oneSignalService');
@@ -46,6 +47,27 @@ const createOrder = async (req, res) => {
             deliveryAddress,
             paymentMethod,
         });
+
+        // Calculate and create Payouts for each farmer
+        const farmerTotals = {};
+        for (const item of items) {
+            const fId = item.farmerId?.toString();
+            if (fId) {
+                if (!farmerTotals[fId]) {
+                    farmerTotals[fId] = 0;
+                }
+                farmerTotals[fId] += (item.price * item.quantity);
+            }
+        }
+
+        for (const fId of Object.keys(farmerTotals)) {
+            await Payout.create({
+                farmerId: fId,
+                orderId: order._id,
+                amount: farmerTotals[fId],
+                status: 'Pending'
+            });
+        }
 
         // Notify Buyer & Farmers
         const buyer = await User.findById(buyerId);

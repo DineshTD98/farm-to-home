@@ -221,6 +221,12 @@ const Checkout = () => {
           theme: {
             color: '#fbbc05',
           },
+          modal: {
+            ondismiss: function() {
+              setLoading(false);
+              setError('Payment process was cancelled by the user.');
+            }
+          }
         };
 
         const razorpayInstance = new window.Razorpay(options);

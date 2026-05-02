@@ -43,6 +43,10 @@ import TermsOfUse from './pages/TermsOfUse';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import FAQ from './pages/FAQ';
 
+import AdminDashboard from './pages/admin/AdminDashboard';
+import Orders from './pages/admin/Orders';
+import Farmers from './pages/admin/Farmers';
+import Payouts from './pages/admin/Payouts';
 // Protected route — redirects to login if no token
 const ProtectedRoute = ({ children }) => {
   const token = useSelector(selectCurrentToken);
@@ -184,6 +188,10 @@ function App() {
           <Route path="/delivery/:id" element={<Placeholder name="Delivery Service" back="/delivery-portal" />} />
 
           <Route path="/admin-portal"    element={<ProtectedRoute><Portal role="admin" /></ProtectedRoute>} />
+          <Route path="/admin/analytics" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+          <Route path="/admin/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+          <Route path="/admin/users" element={<ProtectedRoute><Farmers /></ProtectedRoute>} />
+          <Route path="/admin/payments" element={<ProtectedRoute><Payouts /></ProtectedRoute>} />
           <Route path="/admin/:id" element={<Placeholder name="Admin Control" back="/admin-portal" />} />
 
           {/* Catch-all */}
