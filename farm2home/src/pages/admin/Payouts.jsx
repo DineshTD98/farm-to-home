@@ -129,6 +129,11 @@ const Payouts = () => {
                                             }`}>
                                                 {payout.status}
                                             </span>
+                                            {payout.status === 'Paid' && payout.paidAt && (
+                                                <div className="text-[10px] text-gray-400 mt-1.5 font-bold">
+                                                    {new Date(payout.paidAt).toLocaleDateString()} {new Date(payout.paidAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                </div>
+                                            )}
                                         </td>
                                         <td className="p-6 text-right">
                                             {payout.status === 'Pending' ? (

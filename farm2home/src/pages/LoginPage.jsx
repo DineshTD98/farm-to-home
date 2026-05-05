@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { setCredentials } from '../redux/slices/authSlice';
 import { loginUser } from '../api/auth';
 import { useTheme } from '../context/ThemeContext';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const inputClass =
   'w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-5 py-3.5 text-gray-900 dark:text-white text-sm placeholder-gray-400 focus:outline-none focus:border-[#fbbc05] focus:ring-4 focus:ring-[#fbbc05]/10 transition-all duration-300 shadow-sm';
@@ -12,6 +14,15 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isDarkMode } = useTheme();
+  const user = useSelector(state => state.auth.user);
+  const token = useSelector(state => state.auth.token);
+
+  useEffect(() => {
+    if (token && user) {
+      navigate(`/${user.role}-portal`, { replace: true });
+    }
+  }, [token, user, navigate]);
+
   const [form, setForm] = useState({ phone: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);

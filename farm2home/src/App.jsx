@@ -47,30 +47,11 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import Orders from './pages/admin/Orders';
 import Users from './pages/admin/Users';
 import Payouts from './pages/admin/Payouts';
-// Protected route — redirects to login if no token
-// Protected route — redirects to login if no token, or to portal if role mismatch
-const ProtectedRoute = ({ children, allowedRoles }) => {
-  const token = useSelector(selectCurrentToken);
-  const user = useSelector(selectCurrentUser);
-
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
-
-  if (allowedRoles && (!user || !allowedRoles.includes(user.role))) {
-    // Redirect to respective portal if unauthorized for this specific role
-    if (user?.role === 'admin') return <Navigate to="/admin-portal" replace />;
-    if (user?.role === 'farmer') return <Navigate to="/farmer-portal" replace />;
-    if (user?.role === 'buyer') return <Navigate to="/buyer-portal" replace />;
-    return <Navigate to="/" replace />;
-  }
-
-  return children;
-};
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Helper for placeholder routes
 const Placeholder = ({ name, back }) => (
-  <ProtectedRoute>
+  <ProtectedRoute allowedRoles={['admin', 'farmer', 'buyer', 'delivery']}>
     <ComingSoon featureName={name} backLink={back} />
   </ProtectedRoute>
 );

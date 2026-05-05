@@ -1,14 +1,10 @@
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import AdminNavbar from '../../components/admin/AdminNavbar';
 
 const AdminPortal = () => {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/');
-  };
+  const user = useSelector((state) => state.auth.user);
 
   const cards = [
     { icon: '👥', title: 'All Users', desc: 'Manage farmers, buyers and delivery agents', path: '/admin/users' },
@@ -20,20 +16,8 @@ const AdminPortal = () => {
   ];
 
   return (
-    <div className="portal-wrapper">
-      <nav className="portal-nav">
-        <div className="logo">🌾 Farm2Home</div>
-        <div className="user-info">
-          <div>
-            <div className="user-name">{user.firstName} {user.lastName}</div>
-            <div className="user-role">Administrator</div>
-          </div>
-          <div className="user-avatar" style={{ background: 'linear-gradient(135deg, #8b5cf6, #6d28d9)' }}>
-            {user.firstName?.[0]}{user.lastName?.[0]}
-          </div>
-        </div>
-        <button className="logout-btn" onClick={handleLogout}>Sign Out</button>
-      </nav>
+    <div className="portal-wrapper !p-0">
+      <AdminNavbar />
 
       <div className="portal-content">
         <div className="welcome-banner">
