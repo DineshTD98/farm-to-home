@@ -11,12 +11,12 @@ const AdminPortal = () => {
   };
 
   const cards = [
-    { icon: '👥', title: 'All Users', desc: 'Manage farmers, buyers and delivery agents' },
-    { icon: '📦', title: 'All Orders', desc: 'Monitor and manage all platform orders' },
-    { icon: '📊', title: 'Analytics', desc: 'Platform-wide analytics and reports' },
-    { icon: '🏷️', title: 'Listings', desc: 'Review and moderate crop listings' },
-    { icon: '💳', title: 'Payments', desc: 'Oversee all transactions and payouts' },
-    { icon: '⚙️', title: 'Settings', desc: 'Platform configuration and settings' },
+    { icon: '👥', title: 'All Users', desc: 'Manage farmers, buyers and delivery agents', path: '/admin/users' },
+    { icon: '📦', title: 'All Orders', desc: 'Monitor and manage all platform orders', path: '/admin/orders' },
+    { icon: '📊', title: 'Analytics', desc: 'Platform-wide analytics and reports', path: '/admin/analytics' },
+    { icon: '🏷️', title: 'Listings', desc: 'Review and moderate crop listings', path: '/admin/listings' },
+    { icon: '💳', title: 'Payments', desc: 'Oversee all transactions and payouts', path: '/admin/payments' },
+    { icon: '⚙️', title: 'Settings', desc: 'Platform configuration and settings', path: '/admin/settings' },
   ];
 
   return (
@@ -48,7 +48,11 @@ const AdminPortal = () => {
 
         <div className="portal-cards">
           {cards.map((card) => (
-            <div className="portal-card" key={card.title}>
+            <div 
+              className="portal-card cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all" 
+              key={card.title}
+              onClick={() => card.path && navigate(card.path)}
+            >
               <span className="card-icon">{card.icon}</span>
               <div className="card-title">{card.title}</div>
               <div className="card-desc">{card.desc}</div>

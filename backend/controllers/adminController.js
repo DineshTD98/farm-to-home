@@ -121,10 +121,26 @@ const verifyBankDetails = async (req, res) => {
     }
 };
 
+// @desc    Get all buyers
+// @route   GET /api/admin/buyers
+// @access  Private (Admin)
+const getAllBuyers = async (req, res) => {
+    try {
+        const buyers = await User.find({ role: 'buyer' })
+            .select('-password')
+            .sort({ createdAt: -1 });
+        res.json(buyers);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
 module.exports = {
     getAdminStats,
     getAllOrders,
     getAllFarmers,
+    getAllBuyers,
     getAllPayouts,
     markPayoutPaid,
     verifyBankDetails

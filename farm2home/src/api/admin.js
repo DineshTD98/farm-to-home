@@ -29,6 +29,15 @@ export const getAllFarmers = async () => {
     }
 };
 
+export const getAllBuyers = async () => {
+    try {
+        const response = await axios.get(`${BASE}/buyers`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to fetch buyers');
+    }
+};
+
 export const getAllPayouts = async () => {
     try {
         const response = await axios.get(`${BASE}/payouts`);

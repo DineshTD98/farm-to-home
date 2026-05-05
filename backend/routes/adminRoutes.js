@@ -4,6 +4,7 @@ const {
     getAdminStats, 
     getAllOrders, 
     getAllFarmers, 
+    getAllBuyers,
     getAllPayouts, 
     markPayoutPaid,
     verifyBankDetails
@@ -16,6 +17,7 @@ const {
 router.get('/stats', getAdminStats);
 router.get('/orders', getAllOrders);
 router.get('/farmers', getAllFarmers);
+router.get('/buyers', getAllBuyers);
 router.get('/payouts', getAllPayouts);
 router.put('/payouts/:id/pay', markPayoutPaid);
 router.put('/farmers/:id/verify-bank', verifyBankDetails);
