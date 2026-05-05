@@ -7,6 +7,16 @@ import './i18n';
 import App from './App.jsx'
 import OneSignal from 'react-onesignal';
 import { LanguageProvider } from './context/LanguageContext';
+import axios from 'axios';
+
+// Global Axios Interceptor to add JWT token
+axios.interceptors.request.use((config) => {
+  const token = sessionStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 // Initialize OneSignal and Render App
 const startApp = async () => {

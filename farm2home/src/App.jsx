@@ -48,9 +48,24 @@ import Orders from './pages/admin/Orders';
 import Users from './pages/admin/Users';
 import Payouts from './pages/admin/Payouts';
 // Protected route — redirects to login if no token
-const ProtectedRoute = ({ children }) => {
+// Protected route — redirects to login if no token, or to portal if role mismatch
+const ProtectedRoute = ({ children, allowedRoles }) => {
   const token = useSelector(selectCurrentToken);
-  return token ? children : <Navigate to="/login" replace />;
+  const user = useSelector(selectCurrentUser);
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRoles && (!user || !allowedRoles.includes(user.role))) {
+    // Redirect to respective portal if unauthorized for this specific role
+    if (user?.role === 'admin') return <Navigate to="/admin-portal" replace />;
+    if (user?.role === 'farmer') return <Navigate to="/farmer-portal" replace />;
+    if (user?.role === 'buyer') return <Navigate to="/buyer-portal" replace />;
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
 };
 
 // Helper for placeholder routes
@@ -158,40 +173,40 @@ function App() {
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/faq" element={<FAQ />} />
 
-          <Route path="/farmer-portal"   element={<ProtectedRoute><Portal role="farmer" /></ProtectedRoute>} />
-          <Route path="/farmer/products" element={<ProtectedRoute><ProductList /></ProtectedRoute>} />
-          <Route path="/farmer/add-product" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
-          <Route path="/farmer/edit-product/:id" element={<ProtectedRoute><EditProduct /></ProtectedRoute>} />
-          <Route path="/farmer/orders" element={<ProtectedRoute><FarmerOrders /></ProtectedRoute>} />
-          <Route path="/farmer/earnings" element={<ProtectedRoute><FarmerEarnings /></ProtectedRoute>} />
-          <Route path="/farmer/analytics" element={<ProtectedRoute><FarmerAnalytics /></ProtectedRoute>} />
-          <Route path="/farmer/reviews" element={<ProtectedRoute><FarmerReviews /></ProtectedRoute>} />
-          <Route path="/farmer/settings" element={<ProtectedRoute><FarmerSettings /></ProtectedRoute>} />
-          <Route path="/farmer/feed" element={<ProtectedRoute><FarmerFeed /></ProtectedRoute>} />
-          <Route path="/farmer/profile" element={<ProtectedRoute><FarmerProfile /></ProtectedRoute>} />
-          <Route path="/farmer/messages" element={<ProtectedRoute><ChatInbox /></ProtectedRoute>} />
-          <Route path="/farmer/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+          <Route path="/farmer-portal"   element={<ProtectedRoute allowedRoles={['farmer']}><Portal role="farmer" /></ProtectedRoute>} />
+          <Route path="/farmer/products" element={<ProtectedRoute allowedRoles={['farmer']}><ProductList /></ProtectedRoute>} />
+          <Route path="/farmer/add-product" element={<ProtectedRoute allowedRoles={['farmer']}><AddProduct /></ProtectedRoute>} />
+          <Route path="/farmer/edit-product/:id" element={<ProtectedRoute allowedRoles={['farmer']}><EditProduct /></ProtectedRoute>} />
+          <Route path="/farmer/orders" element={<ProtectedRoute allowedRoles={['farmer']}><FarmerOrders /></ProtectedRoute>} />
+          <Route path="/farmer/earnings" element={<ProtectedRoute allowedRoles={['farmer']}><FarmerEarnings /></ProtectedRoute>} />
+          <Route path="/farmer/analytics" element={<ProtectedRoute allowedRoles={['farmer']}><FarmerAnalytics /></ProtectedRoute>} />
+          <Route path="/farmer/reviews" element={<ProtectedRoute allowedRoles={['farmer']}><FarmerReviews /></ProtectedRoute>} />
+          <Route path="/farmer/settings" element={<ProtectedRoute allowedRoles={['farmer']}><FarmerSettings /></ProtectedRoute>} />
+          <Route path="/farmer/feed" element={<ProtectedRoute allowedRoles={['farmer']}><FarmerFeed /></ProtectedRoute>} />
+          <Route path="/farmer/profile" element={<ProtectedRoute allowedRoles={['farmer']}><FarmerProfile /></ProtectedRoute>} />
+          <Route path="/farmer/messages" element={<ProtectedRoute allowedRoles={['farmer']}><ChatInbox /></ProtectedRoute>} />
+          <Route path="/farmer/notifications" element={<ProtectedRoute allowedRoles={['farmer']}><Notifications /></ProtectedRoute>} />
           
-          <Route path="/buyer-portal"    element={<ProtectedRoute><Portal role="buyer" /></ProtectedRoute>} />
-          <Route path="/buyer/browse"    element={<ProtectedRoute><BrowseProducts /></ProtectedRoute>} />
-          <Route path="/buyer/cart"    element={<ProtectedRoute><Cart /></ProtectedRoute>} />
-          <Route path="/buyer/checkout"    element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-          <Route path="/buyer/orders"    element={<ProtectedRoute><BuyerOrders /></ProtectedRoute>} />
-          <Route path="/buyer/reviews"    element={<ProtectedRoute><BuyerReviews /></ProtectedRoute>} />
-          <Route path="/buyer/notifications"    element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
-          <Route path="/buyer/settings"    element={<ProtectedRoute><BuyerSettings /></ProtectedRoute>} />
-          <Route path="/buyer/messages"    element={<ProtectedRoute><ChatInbox /></ProtectedRoute>} />
-          <Route path="/buyer/order-success"    element={<ProtectedRoute><OrderSuccess /></ProtectedRoute>} />
+          <Route path="/buyer-portal"    element={<ProtectedRoute allowedRoles={['buyer']}><Portal role="buyer" /></ProtectedRoute>} />
+          <Route path="/buyer/browse"    element={<ProtectedRoute allowedRoles={['buyer']}><BrowseProducts /></ProtectedRoute>} />
+          <Route path="/buyer/cart"    element={<ProtectedRoute allowedRoles={['buyer']}><Cart /></ProtectedRoute>} />
+          <Route path="/buyer/checkout"    element={<ProtectedRoute allowedRoles={['buyer']}><Checkout /></ProtectedRoute>} />
+          <Route path="/buyer/orders"    element={<ProtectedRoute allowedRoles={['buyer']}><BuyerOrders /></ProtectedRoute>} />
+          <Route path="/buyer/reviews"    element={<ProtectedRoute allowedRoles={['buyer']}><BuyerReviews /></ProtectedRoute>} />
+          <Route path="/buyer/notifications"    element={<ProtectedRoute allowedRoles={['buyer']}><Notifications /></ProtectedRoute>} />
+          <Route path="/buyer/settings"    element={<ProtectedRoute allowedRoles={['buyer']}><BuyerSettings /></ProtectedRoute>} />
+          <Route path="/buyer/messages"    element={<ProtectedRoute allowedRoles={['buyer']}><ChatInbox /></ProtectedRoute>} />
+          <Route path="/buyer/order-success"    element={<ProtectedRoute allowedRoles={['buyer']}><OrderSuccess /></ProtectedRoute>} />
           <Route path="/buyer/payments"    element={<Placeholder name="Payments" back="/buyer-portal" />} />
 
-          <Route path="/delivery-portal" element={<ProtectedRoute><Portal role="delivery" /></ProtectedRoute>} />
+          <Route path="/delivery-portal" element={<ProtectedRoute allowedRoles={['delivery']}><Portal role="delivery" /></ProtectedRoute>} />
           <Route path="/delivery/:id" element={<Placeholder name="Delivery Service" back="/delivery-portal" />} />
 
-          <Route path="/admin-portal"    element={<ProtectedRoute><Portal role="admin" /></ProtectedRoute>} />
-          <Route path="/admin/analytics" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-          <Route path="/admin/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-          <Route path="/admin/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
-          <Route path="/admin/payments" element={<ProtectedRoute><Payouts /></ProtectedRoute>} />
+          <Route path="/admin-portal"    element={<ProtectedRoute allowedRoles={['admin']}><Portal role="admin" /></ProtectedRoute>} />
+          <Route path="/admin/analytics" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
+          <Route path="/admin/orders" element={<ProtectedRoute allowedRoles={['admin']}><Orders /></ProtectedRoute>} />
+          <Route path="/admin/users" element={<ProtectedRoute allowedRoles={['admin']}><Users /></ProtectedRoute>} />
+          <Route path="/admin/payments" element={<ProtectedRoute allowedRoles={['admin']}><Payouts /></ProtectedRoute>} />
           <Route path="/admin/:id" element={<Placeholder name="Admin Control" back="/admin-portal" />} />
 
           {/* Catch-all */}

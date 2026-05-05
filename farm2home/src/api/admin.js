@@ -64,3 +64,39 @@ export const verifyFarmerBankDetails = async (farmerId) => {
         throw new Error(error.response?.data?.message || 'Failed to verify bank details');
     }
 };
+
+export const updateUserStatus = async (userId, status) => {
+    try {
+        const response = await axios.put(`${BASE}/users/${userId}/status`, { status });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to update user status');
+    }
+};
+
+export const deleteUser = async (userId) => {
+    try {
+        const response = await axios.delete(`${BASE}/users/${userId}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to delete user');
+    }
+};
+
+export const sendUserNotification = async (userId, message, type) => {
+    try {
+        const response = await axios.post(`${BASE}/users/${userId}/notify`, { message, type });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to send notification');
+    }
+};
+
+export const updateAdminOrderStatus = async (orderId, status) => {
+    try {
+        const response = await axios.put(`${BASE}/orders/${orderId}/status`, { status });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to update order status');
+    }
+};

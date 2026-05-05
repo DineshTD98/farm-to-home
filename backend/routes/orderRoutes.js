@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { createOrder, getBuyerOrders, getFarmerOrders, updateOrderStatus, createRazorpayOrder, verifyRazorpayPayment } = require('../controllers/orderController');
+const { protect } = require('../middleware/authMiddleware');
+
+router.use(protect);
 
 // POST /api/orders - Create order
 router.post('/', createOrder);

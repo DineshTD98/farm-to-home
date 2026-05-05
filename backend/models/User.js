@@ -72,6 +72,11 @@ const userSchema = new mongoose.Schema(
             upiId: { type: String, default: '' },
             verified: { type: Boolean, default: false }
         },
+        status: {
+            type: String,
+            enum: ['active', 'suspended'],
+            default: 'active',
+        },
     },
     { timestamps: true }
 );
