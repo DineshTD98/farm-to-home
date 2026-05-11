@@ -32,7 +32,7 @@ import FarmerSettings from './pages/farmer/FarmerSettings';
 import FarmerReviews from './pages/farmer/FarmerReviews';
 import BuyerSettings from './pages/buyer/BuyerSettings';
 import BuyerReviews from './pages/buyer/BuyerReviews';
-import FarmerFeed from './pages/farmer/FarmerFeed';
+// import FarmerFeed from './pages/farmer/FarmerFeed';
 import FarmerProfile from './pages/farmer/FarmerProfile';
 import ChatInbox from './pages/shared/ChatInbox';
 import ForgotPassword from './pages/ForgotPassword';
@@ -163,7 +163,7 @@ function App() {
           <Route path="/farmer/analytics" element={<ProtectedRoute allowedRoles={['farmer']}><FarmerAnalytics /></ProtectedRoute>} />
           <Route path="/farmer/reviews" element={<ProtectedRoute allowedRoles={['farmer']}><FarmerReviews /></ProtectedRoute>} />
           <Route path="/farmer/settings" element={<ProtectedRoute allowedRoles={['farmer']}><FarmerSettings /></ProtectedRoute>} />
-          <Route path="/farmer/feed" element={<ProtectedRoute allowedRoles={['farmer']}><FarmerFeed /></ProtectedRoute>} />
+          {/* <Route path="/farmer/feed" element={<ProtectedRoute allowedRoles={['farmer']}><FarmerFeed /></ProtectedRoute>} /> */}
           <Route path="/farmer/profile" element={<ProtectedRoute allowedRoles={['farmer']}><FarmerProfile /></ProtectedRoute>} />
           <Route path="/farmer/messages" element={<ProtectedRoute allowedRoles={['farmer']}><ChatInbox /></ProtectedRoute>} />
           <Route path="/farmer/notifications" element={<ProtectedRoute allowedRoles={['farmer']}><Notifications /></ProtectedRoute>} />

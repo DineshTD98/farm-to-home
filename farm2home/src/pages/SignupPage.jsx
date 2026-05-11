@@ -68,12 +68,12 @@ const SignupPage = () => {
       <div className="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-gray-100 dark:bg-white/5 rounded-full blur-[100px] -ml-20 -mb-20 pointer-events-none" />
 
       {/* Back to Overview Button */}
-      <button 
+      {/* <button 
         onClick={() => navigate('/')}
         className="absolute top-8 left-8 z-50 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center gap-2"
       >
         <span>←</span> Back to Overview
-      </button>
+      </button> */}
 
       {/* Floating Theme Toggle */}
       <div className="absolute top-8 right-8 z-50">

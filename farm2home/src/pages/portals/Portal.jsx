@@ -234,7 +234,7 @@ const Portal = ({ role }) => {
                     </span>
                   </button>
                 )}
-                <button
+                {/* <button
                   type="button"
                   onClick={() => navigate('/buyer/browse?view=feed')}
                   className="flex items-center gap-2.5 pl-2.5 pr-5 py-2 rounded-2xl border border-gray-200 dark:border-white/15 bg-white dark:bg-white/5 text-gray-700 dark:text-gray-200 hover:border-amber-400/60 hover:text-amber-600 dark:hover:text-amber-300 hover:bg-amber-50/60 dark:hover:bg-amber-500/10 transition-all"
@@ -242,7 +242,7 @@ const Portal = ({ role }) => {
                 >
                   <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gray-50 dark:bg-white/10 text-lg border border-gray-200 dark:border-white/10" aria-hidden>🌾</span>
                   <span className="text-[11px] font-black uppercase tracking-[0.14em]">{t('portal.navFarmFeed')}</span>
-                </button>
+                </button> */}
                 <button
                   type="button"
                   onClick={() => navigate('/buyer/messages')}
@@ -274,7 +274,7 @@ const Portal = ({ role }) => {
             
             {role === 'farmer' && (
               <>
-                <button
+                {/* <button
                   type="button"
                   onClick={() => navigate('/farmer/feed')}
                   className="flex items-center gap-2.5 pl-2.5 pr-5 py-2 rounded-2xl border border-gray-200 dark:border-white/15 bg-white dark:bg-white/5 text-gray-700 dark:text-gray-200 hover:border-green-500/60 hover:text-green-700 dark:hover:text-green-300 hover:bg-green-50/60 dark:hover:bg-green-500/10 transition-all"
@@ -282,7 +282,7 @@ const Portal = ({ role }) => {
                 >
                   <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gray-50 dark:bg-white/10 text-lg border border-gray-200 dark:border-white/10" aria-hidden>🌾</span>
                   <span className="text-[11px] font-black uppercase tracking-[0.14em]">{t('portal.navFarmFeed')}</span>
-                </button>
+                </button> */}
                 <button
                   type="button"
                   onClick={() => navigate('/farmer/messages')}
@@ -397,12 +397,12 @@ const Portal = ({ role }) => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <button 
+                {/* <button 
                   onClick={() => { navigate(role === 'buyer' ? '/buyer/browse?view=feed' : '/farmer/feed'); setIsMenuOpen(false); }}
                   className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 dark:bg-white/5 text-gray-900 dark:text-white font-bold"
                 >
                   <span className="text-xl">🌾</span> {t('portal.navFarmFeed')}
-                </button>
+                </button> */}
                 <button 
                   onClick={() => { navigate(role === 'buyer' ? '/buyer/messages' : '/farmer/messages'); setIsMenuOpen(false); }}
                   className="flex items-center justify-between p-4 rounded-2xl bg-gray-50 dark:bg-white/5 text-gray-900 dark:text-white font-bold"

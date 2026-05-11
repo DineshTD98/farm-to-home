@@ -111,12 +111,6 @@ const LoginPage = () => {
               New to Farm2Home?{' '}
               <span onClick={() => navigate('/signup')} className="text-[#fbbc05] font-black uppercase tracking-widest cursor-pointer hover:underline ml-1">Create Account</span>
             </p>
-            <button 
-              onClick={() => navigate('/')} 
-              className="text-gray-400 dark:text-gray-500 text-[10px] font-black uppercase tracking-widest hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
-              ← Back to Overview
-            </button>
         </div>
       </div>
     </div>

@@ -50,9 +50,7 @@ const BrowseProducts = () => {
   const [pincode, setPincode] = useState(user?.pincode || '');
   const [latestStockAlert, setLatestStockAlert] = useState(null);
   const [subscriptions, setSubscriptions] = useState({}); // { productId: true/false }
-  const [buyerView, setBuyerView] = useState(() =>
-    searchParams.get('view') === 'feed' ? 'feed' : 'marketplace'
-  );
+  const [buyerView, setBuyerView] = useState('marketplace');
   const [feedPosts, setFeedPosts] = useState([]);
   const [feedLoading, setFeedLoading] = useState(false);
   const [chatFarmer, setChatFarmer] = useState(null);
@@ -152,13 +150,13 @@ const BrowseProducts = () => {
     if (user) fetchData();
   }, [user, selectedCategory, buyerLocation, radius]);
 
-  useEffect(() => {
-    if (searchParams.get('view') === 'feed') {
-      setBuyerView('feed');
-    } else {
-      setBuyerView('marketplace');
-    }
-  }, [searchParams]);
+  // useEffect(() => {
+  //   if (searchParams.get('view') === 'feed') {
+  //     setBuyerView('feed');
+  //   } else {
+  //     setBuyerView('marketplace');
+  //   }
+  // }, [searchParams]);
 
   const viewerId = user?.id || user?._id;
 
@@ -263,13 +261,13 @@ const BrowseProducts = () => {
             {/* Desktop Actions */}
             <div className="hidden lg:flex items-center gap-4">
               <div className="flex bg-gray-50 dark:bg-white/5 p-1 rounded-xl border border-gray-100 dark:border-white/10">
-                <button
+                {/* <button
                   type="button"
                   onClick={() => { setBuyerView('feed'); setSearchParams({ view: 'feed' }); }}
                   className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${buyerView === 'feed' ? 'bg-[#fbbc05] text-white shadow-md' : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
                 >
                   {t('browse.feedTab')}
-                </button>
+                </button> */}
                 <button
                   type="button"
                   onClick={() => { setBuyerView('marketplace'); setSearchParams({}); }}
@@ -375,13 +373,13 @@ const BrowseProducts = () => {
                   </button>
                 </div>
               <div className="grid grid-cols-2 gap-3">
-                <button
+                {/* <button
                   onClick={() => { setBuyerView('feed'); setSearchParams({ view: 'feed' }); setIsMenuOpen(false); }}
                   className={`flex flex-col items-center justify-center p-4 rounded-2xl border ${buyerView === 'feed' ? 'bg-amber-50 border-amber-200 dark:bg-amber-500/10 dark:border-amber-500/20' : 'border-gray-100 dark:border-white/5'}`}
                 >
                   <span className="text-2xl mb-1">🌾</span>
                   <span className={`text-[10px] font-black uppercase tracking-widest ${buyerView === 'feed' ? 'text-[#fbbc05]' : 'text-gray-400'}`}>{t('browse.feedTab')}</span>
-                </button>
+                </button> */}
                 <button
                   onClick={() => { setBuyerView('marketplace'); setSearchParams({}); setIsMenuOpen(false); }}
                   className={`flex flex-col items-center justify-center p-4 rounded-2xl border ${buyerView === 'marketplace' ? 'bg-amber-50 border-amber-200 dark:bg-amber-500/10 dark:border-amber-500/20' : 'border-gray-100 dark:border-white/5'}`}
@@ -421,7 +419,7 @@ const BrowseProducts = () => {
       </nav>
 
       <div className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-10 overflow-x-hidden">
-        {buyerView === 'feed' ? (
+{/* {buyerView === 'feed' ? (
           <div className="space-y-8">
             <div className="relative overflow-hidden rounded-[2rem] border border-amber-200/60 dark:border-amber-500/25 bg-gradient-to-br from-amber-50/90 via-white to-orange-50/70 dark:from-[#1c1814] dark:via-[#141414] dark:to-[#1a140e] p-8 sm:p-10 shadow-sm">
               <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-amber-400/20 blur-3xl dark:bg-amber-500/10 pointer-events-none" />
@@ -447,7 +445,7 @@ const BrowseProducts = () => {
               onRefresh={loadFeed}
             />
           </div>
-        ) : (
+        ) : ( */}
           <>
             <div className="flex flex-col gap-6 mb-12">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -717,7 +715,7 @@ const BrowseProducts = () => {
           </div>
         )}
           </>
-        )}
+        {/* )} */}
       </div>
 
       {/* Product Modal */}

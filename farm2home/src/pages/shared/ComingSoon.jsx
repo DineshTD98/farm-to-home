@@ -33,12 +33,12 @@ const ComingSoon = ({ featureName, backLink }) => {
             >
               Back to Portal
             </button>
-            <button
+            {/* <button
               onClick={() => navigate('/')}
               className="px-10 py-5 rounded-3xl bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-900 dark:text-white font-black text-[11px] uppercase tracking-[0.2em] shadow-sm hover:border-[#fbbc05] hover:text-[#fbbc05] transition-all duration-300"
             >
               Go to Home
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
